@@ -160,6 +160,18 @@
   }
   .field input:focus, .field textarea:focus { border-color: rgba(126,224,195,.45); }
   .field textarea { resize: vertical; min-height: 110px; }
+  .field input[type=file] {
+    padding:.55rem .7rem; cursor:pointer; color:var(--muted);
+  }
+  .field input[type=file]::file-selector-button {
+    margin-right:.75rem; padding:.4rem .75rem; border-radius:10px;
+    border:1px solid var(--line); background:#151c26; color:var(--ink);
+    font: inherit; cursor:pointer;
+  }
+  .field input[type=file]::file-selector-button:hover {
+    border-color: rgba(126,224,195,.45); color:var(--accent);
+  }
+  .field .hint { display:block; font-size:.75rem; color:var(--muted); margin-top:.35rem; }
   .form-note { color: var(--muted); font-size: .85rem; margin: 1rem 0 0; }
   #contact-form .btn { border:0; cursor:pointer; font:inherit; }
 </style>
@@ -264,7 +276,7 @@
       <div class="panel" id="contact">
         <h3 style="margin-top:0">Start a project</h3>
         <p style="color:var(--muted);margin:.4rem 0 1rem">Tell us what you’re building. We’ll reply with options and pricing — your message is sent through a secure form (CAPTCHA protected). No public email on this page.</p>
-        <form id="contact-form" action="https://formspree.io/f/mjyyybqg" method="POST">
+        <form id="contact-form" action="https://formspree.io/f/mjyyybqg" method="POST" enctype="multipart/form-data">
           <label class="field">
             <span>Name</span>
             <input type="text" name="name" required autocomplete="name" placeholder="Your name" />
@@ -276,6 +288,11 @@
           <label class="field">
             <span>What do you need?</span>
             <textarea name="message" required rows="4" placeholder="Part idea, files you have, timeline…"></textarea>
+          </label>
+          <label class="field">
+            <span>Attach a file</span>
+            <input type="file" name="attachment" multiple accept=".stl,.step,.stp,.obj,.3mf,.amf,.gcode,.pdf,.png,.jpg,.jpeg,.webp,.gif,.zip" />
+            <span class="hint">Optional — STL, STEP, photos, PDF, or ZIP (up to 10 files, 25&nbsp;MB each)</span>
           </label>
           <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;height:0;width:0;opacity:0" aria-hidden="true" />
           <input type="hidden" name="_subject" value="Mechanose website inquiry" />
