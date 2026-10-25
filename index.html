@@ -86,21 +86,10 @@
     border: 1px solid rgba(126,224,195,.35); padding: .2rem .55rem; border-radius: 999px;
     margin-bottom: .55rem;
   }
-  .fake-model {
-    height: 120px; border-radius: 14px; margin-bottom: .8rem;
-    background:
-      linear-gradient(135deg, rgba(106,168,255,.25), transparent 55%),
-      linear-gradient(225deg, rgba(126,224,195,.2), transparent 50%),
-      repeating-linear-gradient(90deg, transparent, transparent 11px, rgba(255,255,255,.04) 11px, rgba(255,255,255,.04) 12px),
-      #0e1319;
-    position: relative; overflow: hidden;
+  .hero-thumb {
+    width: 100%; height: 140px; object-fit: cover; border-radius: 14px; margin-bottom: .8rem; display: block;
   }
-  .fake-model::after {
-    content: ""; position: absolute; inset: 18% 28%;
-    background: linear-gradient(160deg, #8fd7ff, #7ee0c3 55%, #4d7cff);
-    clip-path: polygon(50% 0%, 90% 25%, 90% 75%, 50% 100%, 10% 75%, 10% 25%);
-    opacity: .9; filter: drop-shadow(0 10px 20px rgba(126,224,195,.35));
-  }
+  .hero-thumb.small { height: 96px; }
   section { padding: 3.5rem 0; }
   .section-title { font-size: 1.8rem; margin: 0 0 .5rem; letter-spacing: -.02em; }
   .section-sub { color: var(--muted); margin: 0 0 2rem; max-width: 40rem; }
@@ -125,26 +114,25 @@
   }
   .step b { color: var(--accent2); font-size: .8rem; }
   .gallery {
-    display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 160px 160px; gap: .75rem;
+    display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 160px 160px 160px; gap: .75rem;
   }
+  .gallery .big { grid-row: span 2; }
   @media (max-width: 860px) {
-    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 140px); }
-    .gallery .big { grid-column: span 2; }
+    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 140px); }
+    .gallery .big { grid-column: span 2; grid-row: span 1; }
   }
   .tile {
     border-radius: 16px; border: 1px solid var(--line); overflow: hidden;
     background: #10151c; position: relative;
   }
   .big { grid-row: span 2; }
+  .tile img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
   .tile span {
     position: absolute; left: .85rem; bottom: .85rem;
     background: rgba(0,0,0,.55); padding: .35rem .6rem; border-radius: 8px; font-size: .8rem;
   }
-  .t1 { background: linear-gradient(160deg,#1b2a44,#0f1722 60%), repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,255,255,.03) 8px, rgba(255,255,255,.03) 9px); }
-  .t2 { background: linear-gradient(200deg,#16352f,#0f1722); }
-  .t3 { background: linear-gradient(20deg,#2a1f3d,#0f1722); }
-  .t4 { background: linear-gradient(140deg,#3a2418,#0f1722); }
-  .t5 { background: linear-gradient(180deg,#1c3340,#0f1722); }
   .about {
     display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: start;
   }
@@ -204,12 +192,13 @@
       <div class="card-stack">
         <div class="print-card">
           <div class="tag">Prototype</div>
-          <div class="fake-model"></div>
-          <strong>Enclosure v3</strong>
-          <div style="color:var(--muted);font-size:.9rem">PETG · functional fit check</div>
+          <img class="hero-thumb" src="images/shelf-bracket.jpg" alt="3D-printed shelf bracket" />
+          <strong>Shelf bracket</strong>
+          <div style="color:var(--muted);font-size:.9rem">PETG · load-bearing sample</div>
         </div>
         <div class="print-card">
           <div class="tag">Fixture</div>
+          <img class="hero-thumb small" src="images/drill-guide.jpg" alt="3D-printed drill guide" />
           <strong>Drill guide — shop tool</strong>
           <div style="color:var(--muted);font-size:.9rem">PLA · 0.2 mm layers</div>
         </div>
@@ -240,13 +229,14 @@
 
     <section id="work">
       <h2 class="section-title">Sample gallery</h2>
-      <p class="section-sub">Placeholder tiles for how a portfolio section can look once you have photos of real prints.</p>
+      <p class="section-sub">Industrial small parts — brackets, clamps, fixtures, and prototypes. Sample images for the portfolio.</p>
       <div class="gallery">
-        <div class="tile big t1"><span>Robotics mount</span></div>
-        <div class="tile t2"><span>Cable clip set</span></div>
-        <div class="tile t3"><span>Camera bracket</span></div>
-        <div class="tile t4"><span>Tool organizer</span></div>
-        <div class="tile t5"><span>Gear prototype</span></div>
+        <div class="tile big"><img src="images/shelf-bracket.jpg" alt="Shelf bracket" /><span>Shelf bracket</span></div>
+        <div class="tile"><img src="images/cable-clamps.jpg" alt="Cable clamps" /><span>Cable clamp set</span></div>
+        <div class="tile"><img src="images/sensor-mount.jpg" alt="Sensor mount" /><span>Sensor mount</span></div>
+        <div class="tile"><img src="images/corner-braces.jpg" alt="Corner braces" /><span>Corner braces</span></div>
+        <div class="tile"><img src="images/drill-guide.jpg" alt="Drill guide" /><span>Drill guide jig</span></div>
+        <div class="tile"><img src="images/gear-prototype.jpg" alt="Gear prototype" /><span>Gear prototype</span></div>
       </div>
     </section>
 
