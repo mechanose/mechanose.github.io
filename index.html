@@ -158,6 +158,18 @@
     border-top: 1px solid var(--line); padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem;
     display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
   }
+
+  .field { display:block; margin-bottom:.85rem; }
+  .field span { display:block; font-size:.82rem; color:var(--muted); margin-bottom:.35rem; }
+  .field input, .field textarea {
+    width:100%; padding:.7rem .8rem; border-radius:12px;
+    border:1px solid var(--line); background:#0e1319; color:var(--ink);
+    font: inherit; outline: none;
+  }
+  .field input:focus, .field textarea:focus { border-color: rgba(126,224,195,.45); }
+  .field textarea { resize: vertical; min-height: 110px; }
+  .form-note { color: var(--muted); font-size: .85rem; margin: 1rem 0 0; }
+  #contact-form .btn { border:0; cursor:pointer; font:inherit; }
 </style>
 </head>
 <body>
@@ -257,13 +269,25 @@
       </div>
       <div class="panel" id="contact">
         <h3 style="margin-top:0">Start a project</h3>
-        <p style="color:var(--muted);margin:.4rem 0 0">Tell us what you’re building. We’ll reply with options and pricing.</p>
-        <ul class="contact-list">
-          <li>Email — hello@mechanose.com</li>
-          <li>Area — Georgetown, TX</li>
-          <li>Typical turnaround — a few days for small parts</li>
-        </ul>
-        <a class="btn" style="margin-top:1.1rem;width:100%" href="mailto:hello@example.com">Email Mechanose</a>
+        <p style="color:var(--muted);margin:.4rem 0 1rem">Tell us what you’re building. We’ll reply with options and pricing — your message is sent through a secure form (CAPTCHA protected). No public email on this page.</p>
+        <form id="contact-form" action="https://formspree.io/f/mjyyybqg" method="POST">
+          <label class="field">
+            <span>Name</span>
+            <input type="text" name="name" required autocomplete="name" placeholder="Your name" />
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input type="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+          </label>
+          <label class="field">
+            <span>What do you need?</span>
+            <textarea name="message" required rows="4" placeholder="Part idea, files you have, timeline…"></textarea>
+          </label>
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;height:0;width:0;opacity:0" aria-hidden="true" />
+          <input type="hidden" name="_subject" value="Mechanose website inquiry" />
+          <button class="btn" type="submit" style="width:100%;margin-top:.35rem">Send message</button>
+        </form>
+        <p class="form-note">Area — Georgetown, TX · Typical turnaround — a few days for small parts</p>
       </div>
     </section>
   </main>
