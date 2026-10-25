@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mechanose — Custom 3D Printing</title>
+<style>
+  :root {
+    --bg: #0b0d10;
+    --panel: #12161c;
+    --ink: #eef2f6;
+    --muted: #9aa6b2;
+    --accent: #7ee0c3;
+    --accent2: #6aa8ff;
+    --line: rgba(255,255,255,.08);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 10% -10%, #1a2740 0%, transparent 55%),
+                radial-gradient(900px 500px at 90% 0%, #16352f 0%, transparent 50%),
+                var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { width: min(1100px, 92%); margin: 0 auto; }
+  header {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(14px);
+    background: rgba(11,13,16,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 0; gap: 1rem;
+  }
+  .logo {
+    font-weight: 700; letter-spacing: .04em; font-size: 1.15rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .logo-mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    box-shadow: 0 0 24px rgba(126,224,195,.35);
+  }
+  nav { display: flex; gap: 1.25rem; color: var(--muted); font-size: .95rem; }
+  nav a:hover { color: var(--ink); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: .75rem 1.15rem; border-radius: 999px; font-weight: 600;
+    background: linear-gradient(135deg, var(--accent), #5fd0b0);
+    color: #062019; border: 0; cursor: pointer;
+  }
+  .btn.ghost {
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .hero { padding: 5.5rem 0 4rem; display: grid; grid-template-columns: 1.15fr .85fr; gap: 2.5rem; align-items: center; }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding-top: 3rem; }
+    nav { display: none; }
+  }
+  h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    line-height: 1.05; margin: 0 0 1rem; letter-spacing: -0.03em;
+  }
+  .lede { color: var(--muted); font-size: 1.1rem; max-width: 36rem; margin-bottom: 1.75rem; }
+  .hero-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+  .stats { display: flex; gap: 1.5rem; margin-top: 2.25rem; color: var(--muted); font-size: .9rem; }
+  .stats strong { display: block; color: var(--ink); font-size: 1.25rem; }
+  .card-stack {
+    background: linear-gradient(180deg, rgba(255,255,255,.04), transparent);
+    border: 1px solid var(--line); border-radius: 24px; padding: 1rem;
+    box-shadow: 0 30px 80px rgba(0,0,0,.35);
+  }
+  .print-card {
+    background: var(--panel); border-radius: 18px; padding: 1.25rem;
+    border: 1px solid var(--line); margin-bottom: .75rem;
+  }
+  .print-card:last-child { margin-bottom: 0; }
+  .tag {
+    display: inline-block; font-size: .75rem; color: var(--accent);
+    border: 1px solid rgba(126,224,195,.35); padding: .2rem .55rem; border-radius: 999px;
+    margin-bottom: .55rem;
+  }
+  .fake-model {
+    height: 120px; border-radius: 14px; margin-bottom: .8rem;
+    background:
+      linear-gradient(135deg, rgba(106,168,255,.25), transparent 55%),
+      linear-gradient(225deg, rgba(126,224,195,.2), transparent 50%),
+      repeating-linear-gradient(90deg, transparent, transparent 11px, rgba(255,255,255,.04) 11px, rgba(255,255,255,.04) 12px),
+      #0e1319;
+    position: relative; overflow: hidden;
+  }
+  .fake-model::after {
+    content: ""; position: absolute; inset: 18% 28%;
+    background: linear-gradient(160deg, #8fd7ff, #7ee0c3 55%, #4d7cff);
+    clip-path: polygon(50% 0%, 90% 25%, 90% 75%, 50% 100%, 10% 75%, 10% 25%);
+    opacity: .9; filter: drop-shadow(0 10px 20px rgba(126,224,195,.35));
+  }
+  section { padding: 3.5rem 0; }
+  .section-title { font-size: 1.8rem; margin: 0 0 .5rem; letter-spacing: -.02em; }
+  .section-sub { color: var(--muted); margin: 0 0 2rem; max-width: 40rem; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  .feature {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 18px; padding: 1.35rem;
+  }
+  .feature h3 { margin: 0 0 .4rem; font-size: 1.05rem; }
+  .feature p { margin: 0; color: var(--muted); font-size: .95rem; }
+  .icon {
+    width: 36px; height: 36px; border-radius: 10px; margin-bottom: .9rem;
+    display: grid; place-items: center; font-size: .9rem; font-weight: 700;
+    background: rgba(126,224,195,.12); color: var(--accent);
+  }
+  .process { display: grid; grid-template-columns: repeat(4, 1fr); gap: .85rem; }
+  @media (max-width: 860px) { .process { grid-template-columns: 1fr 1fr; } }
+  .step {
+    border: 1px dashed rgba(255,255,255,.12); border-radius: 16px; padding: 1rem;
+    background: rgba(255,255,255,.02);
+  }
+  .step b { color: var(--accent2); font-size: .8rem; }
+  .gallery {
+    display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 160px 160px; gap: .75rem;
+  }
+  @media (max-width: 860px) {
+    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 140px); }
+    .gallery .big { grid-column: span 2; }
+  }
+  .tile {
+    border-radius: 16px; border: 1px solid var(--line); overflow: hidden;
+    background: #10151c; position: relative;
+  }
+  .big { grid-row: span 2; }
+  .tile span {
+    position: absolute; left: .85rem; bottom: .85rem;
+    background: rgba(0,0,0,.55); padding: .35rem .6rem; border-radius: 8px; font-size: .8rem;
+  }
+  .t1 { background: linear-gradient(160deg,#1b2a44,#0f1722 60%), repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,255,255,.03) 8px, rgba(255,255,255,.03) 9px); }
+  .t2 { background: linear-gradient(200deg,#16352f,#0f1722); }
+  .t3 { background: linear-gradient(20deg,#2a1f3d,#0f1722); }
+  .t4 { background: linear-gradient(140deg,#3a2418,#0f1722); }
+  .t5 { background: linear-gradient(180deg,#1c3340,#0f1722); }
+  .about {
+    display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: start;
+  }
+  @media (max-width: 860px) { .about { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 1.5rem;
+  }
+  .contact-list { list-style: none; padding: 0; margin: 1rem 0 0; color: var(--muted); }
+  .contact-list li { padding: .45rem 0; border-bottom: 1px solid var(--line); }
+  footer {
+    border-top: 1px solid var(--line); padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem;
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <div class="logo"><span class="logo-mark"></span> MECHANOSE</div>
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#about">About</a>
+      </nav>
+      <a class="btn" href="#contact">Get a quote</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <h1>Ideas into form.<br/>Devices into reality.</h1>
+        <p class="lede">Mechanose is a custom 3D printing studio for prototypes, fixtures, and one-off parts — designed, sliced, and printed with care in Georgetown, Texas.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#contact">Start a project</a>
+          <a class="btn ghost" href="#work">See sample work</a>
+        </div>
+        <div class="stats">
+          <div><strong>48h</strong> typical quote</div>
+          <div><strong>PLA · PETG · TPU</strong> common materials</div>
+          <div><strong>Local</strong> Central Texas pickup</div>
+        </div>
+      </div>
+      <div class="card-stack">
+        <div class="print-card">
+          <div class="tag">Prototype</div>
+          <div class="fake-model"></div>
+          <strong>Enclosure v3</strong>
+          <div style="color:var(--muted);font-size:.9rem">PETG · functional fit check</div>
+        </div>
+        <div class="print-card">
+          <div class="tag">Fixture</div>
+          <strong>Drill guide — shop tool</strong>
+          <div style="color:var(--muted);font-size:.9rem">PLA · 0.2 mm layers</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <h2 class="section-title">What we print</h2>
+      <p class="section-sub">No storefront catalog — just custom work from your files or a sketch. Built for inventors, makers, and small shops.</p>
+      <div class="grid">
+        <div class="feature">
+          <div class="icon">01</div>
+          <h3>Prototypes</h3>
+          <p>Fast iterations so you can hold the idea, test the fit, and revise before tooling.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">02</div>
+          <h3>Functional parts</h3>
+          <p>Brackets, housings, jigs, and replacements designed for real use — not just display.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">03</div>
+          <h3>Design help</h3>
+          <p>Bring a napkin sketch or broken part. We’ll help turn it into a printable model.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <h2 class="section-title">Sample gallery</h2>
+      <p class="section-sub">Placeholder tiles for how a portfolio section can look once you have photos of real prints.</p>
+      <div class="gallery">
+        <div class="tile big t1"><span>Robotics mount</span></div>
+        <div class="tile t2"><span>Cable clip set</span></div>
+        <div class="tile t3"><span>Camera bracket</span></div>
+        <div class="tile t4"><span>Tool organizer</span></div>
+        <div class="tile t5"><span>Gear prototype</span></div>
+      </div>
+    </section>
+
+    <section id="process">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-sub">Simple path from idea to part — no shopping cart required.</p>
+      <div class="process">
+        <div class="step"><b>STEP 1</b><h3 style="margin:.35rem 0">Send files</h3><p style="margin:0;color:var(--muted);font-size:.92rem">STL, STEP, or photos of what you need.</p></div>
+        <div class="step"><b>STEP 2</b><h3 style="margin:.35rem 0">Get a quote</h3><p style="margin:0;color:var(--muted);font-size:.92rem">Material, strength, finish, and timeline.</p></div>
+        <div class="step"><b>STEP 3</b><h3 style="margin:.35rem 0">We print</h3><p style="margin:0;color:var(--muted);font-size:.92rem">Dialed settings, checked layers, cleaned parts.</p></div>
+        <div class="step"><b>STEP 4</b><h3 style="margin:.35rem 0">Pickup / ship</h3><p style="margin:0;color:var(--muted);font-size:.92rem">Local handoff or mail to your door.</p></div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div>
+        <h2 class="section-title">Of many devices</h2>
+        <p class="section-sub" style="margin-bottom:1rem">Mechanose takes its name from the Greek for clever devices — the spirit of making useful things that didn’t exist until someone invented them.</p>
+        <p style="color:var(--muted)">This page is a demo: homepage, services, gallery, process, and contact — enough for an information site while you grow.</p>
+      </div>
+      <div class="panel" id="contact">
+        <h3 style="margin-top:0">Start a project</h3>
+        <p style="color:var(--muted);margin:.4rem 0 0">Tell us what you’re building. We’ll reply with options and pricing.</p>
+        <ul class="contact-list">
+          <li>Email — hello@mechanose.com</li>
+          <li>Area — Georgetown, TX</li>
+          <li>Typical turnaround — a few days for small parts</li>
+        </ul>
+        <a class="btn" style="margin-top:1.1rem;width:100%" href="mailto:hello@example.com">Email Mechanose</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <div>© 2026 Mechanose · Demo information site</div>
+    <div>Custom 3D printing · Central Texas</div>
+  </footer>
+</body>
+</html>
