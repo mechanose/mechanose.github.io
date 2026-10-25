@@ -39,15 +39,19 @@
   }
   .logo {
     display: flex; align-items: center; text-decoration: none;
+    flex: 1 1 auto; min-width: 0;
   }
   .logo-img {
-    height: 72px; width: auto; max-width: min(420px, 62vw); object-fit: contain; display: block; border-radius: 8px;
+    height: auto; width: 100%; max-width: min(560px, calc(100vw - 9rem));
+    max-height: 96px; object-fit: contain; object-position: left center;
+    display: block; border-radius: 8px;
   }
   @media (max-width: 860px) {
-    .logo-img { height: 56px; max-width: 70vw; }
+    .logo-img { max-height: 72px; max-width: calc(100vw - 8.5rem); }
   }
   nav { display: flex; gap: 1.25rem; color: var(--muted); font-size: .95rem; }
   nav a:hover { color: var(--ink); }
+  header .btn { white-space: nowrap; flex: 0 0 auto; padding: .65rem 0.95rem; font-size: .9rem; }
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
     padding: .75rem 1.15rem; border-radius: 999px; font-weight: 600;
