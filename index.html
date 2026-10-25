@@ -35,16 +35,16 @@
   }
   .nav {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 0; gap: 1rem;
+    padding: 1.1rem 0; gap: 1rem;
   }
   .logo {
     display: flex; align-items: center; text-decoration: none;
   }
   .logo-img {
-    height: 44px; width: auto; display: block; border-radius: 6px;
+    height: 72px; width: auto; max-width: min(420px, 62vw); object-fit: contain; display: block; border-radius: 8px;
   }
   @media (max-width: 860px) {
-    .logo-img { height: 36px; }
+    .logo-img { height: 56px; max-width: 70vw; }
   }
   nav { display: flex; gap: 1.25rem; color: var(--muted); font-size: .95rem; }
   nav a:hover { color: var(--ink); }
